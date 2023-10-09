@@ -112,7 +112,7 @@ const Login = ({ navigation }) => {
 
                 <Button2
                     title="Login"
-                    onPress={() => navigation.navigate("Steptwo")}
+                    onPress={() => navigation.navigate("Stepone")}
                     filled
                     style={{
                         marginTop:1,
@@ -152,7 +152,7 @@ const Login = ({ navigation }) => {
                 }}>
                     <Text style={{ fontSize: 16, color: COLORS.white }}>Already have an account</Text>
                     <Pressable
-                        onPress={() => navigation.navigate("")}
+                        onPress={() => navigation.navigate("Register")}
                     >
                         <Text style={{
                             fontSize: 18,

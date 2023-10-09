@@ -1,7 +1,7 @@
 import { StatusBar } from 'expo-status-bar';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from "@react-navigation/native-stack"
-import { Login,Signup,Welcome,Home,Stepone,Steptwo } from './screen';
+import { Login,Signup,Welcome,Home,Stepone,Steptwo,Preview,Register } from './screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -49,6 +49,20 @@ export default function App() {
           }}
           />
           
+          <Stack.Screen
+          name="Preview"
+          component={Preview}
+          options={{
+            headerShown: false
+          }}
+          />
+          <Stack.Screen
+          name="Register"
+          component={Register}
+          options={{
+            headerShown: false
+          }}
+          />
       </Stack.Navigator>
     </NavigationContainer>
   );

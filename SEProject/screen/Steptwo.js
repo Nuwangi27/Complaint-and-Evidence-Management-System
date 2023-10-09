@@ -12,6 +12,7 @@ import { MultipleSelectList } from 'react-native-dropdown-select-list';
 import Button2 from '../components/Button2';
 
 
+
 const COLORS = {
   secondary: 'your_secondary_color_here',
   white: 'white',
@@ -19,7 +20,7 @@ const COLORS = {
   gray: 'gray',
 };
 
-export default function App() {
+export default function App({navigation}) {
   const [showPersonalInfo, setShowPersonalInfo] = useState(false);
   const [showIncidentDetails, setShowIncidentDetails] = useState(false);
   const [showDepartmentDropdown, setShowDepartmentDropdown] = useState(false);
@@ -158,11 +159,11 @@ export default function App() {
           
           <Button2
                     title="Preview"
-                    onPress={() => navigation.navigate("Steptwo")}
+                    onPress={() => navigation.navigate("Preview")}
                     filled
                     style={{
-                        marginTop:50,
-                        marginBottom: 80,
+                        marginTop:80,
+                        marginBottom: 70,
                     }}
                 />
         </View>
@@ -181,9 +182,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   sectionHeader: {
-    marginTop: 20,
+    marginTop: 10,
     backgroundColor: COLORS.gray,
-    padding: 10,
+    padding: 50,
     borderRadius: 5,
   },
   sectionHeaderText: {
