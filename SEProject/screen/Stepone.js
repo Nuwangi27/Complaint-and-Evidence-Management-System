@@ -5,7 +5,7 @@ import COLORS from '../constants/colors';
 
 import Button2 from '../components/Button2';
 
-export default function App({ navigation }) { 
+export default function App({ navigation }) {
   const [textInputValue, setTextInputValue] = useState('');
   const [selectedSentence, setSelectedSentence] = useState('');
 
@@ -82,16 +82,16 @@ export default function App({ navigation }) {
             <Text style={{ marginVertical: 10, color: COLORS.white }}>{sentence}</Text>
           </TouchableOpacity>
         ))}
-         <Button2
-                    title="Proceed"
-                    onPress={() => navigation.navigate("Steptwo")} 
-                    filled
-                    style={{
-                        marginTop: 1,
-                        marginBottom: 10,
-                    }}
-                    
-                />
+        <Button2
+          title="Proceed"
+          onPress={() => navigation.navigate("Steptwo", {selectedSentence})}
+          filled
+          style={{
+            marginTop: 1,
+            marginBottom: 10,
+          }}
+
+        />
 
       </View>
     </SafeAreaView>

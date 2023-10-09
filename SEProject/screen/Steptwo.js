@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
 import Button2 from '../components/Button2';
-
+import { useRoute } from '@react-navigation/native';
 
 
 const COLORS = {
@@ -21,6 +21,8 @@ const COLORS = {
 };
 
 export default function App({navigation}) {
+  const route = useRoute();
+  const { selectedSentence } = route.params;
   const [showPersonalInfo, setShowPersonalInfo] = useState(false);
   const [showIncidentDetails, setShowIncidentDetails] = useState(false);
   const [showDepartmentDropdown, setShowDepartmentDropdown] = useState(false);
@@ -51,8 +53,9 @@ export default function App({navigation}) {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.scrollView}>
+      <Text style={styles.sectionHeaderText}>{selectedSentence} </Text>
         <TouchableOpacity onPress={() => toggleSection('personalInfo')} style={styles.sectionHeader}>
-          <Text style={styles.sectionHeaderText}>Personal Information</Text>
+          <Text style={styles.sectionHeaderText}>personal Information</Text>
         </TouchableOpacity>
         {showPersonalInfo && (
           <ScrollView style={styles.sectionContent}>
@@ -210,7 +213,7 @@ const styles = StyleSheet.create({
     bottom:10
   },
   dropdownHeaderText: {
-    color: COLORS.white,
+    color: COLORS.blue,
     fontSize: 18,
     fontWeight: 'bold',
     
