@@ -24,14 +24,13 @@ const Button = (props) => {
 
 const styles = StyleSheet.create({
     button: {
-        top:50,
-        paddingBottom: 100,
-        paddingVertical: 20,
-        borderColor: COLORS.yellow,
-        borderWidth: 2,
-        borderRadius: 600,
-        alignItems: 'center',
-        justifyContent: 'center'
+        height: 50,
+        width: '100%',
+        marginVertical: 20,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 12,
+        fontFamily: "bold",
     }
 })
 export default Button
