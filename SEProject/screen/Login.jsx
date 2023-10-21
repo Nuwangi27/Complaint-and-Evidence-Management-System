@@ -156,7 +156,7 @@ const Login = ({ navigation }) => {
                 </View>
                 <SubmitButton
                   title={"L O G I N"}
-                  onPress={isValid ? handleSubmit : () => navigation.navigate("OTP")}
+                  onPress={isValid ? handleSubmit : () => navigation.replace("OTP")}
                   isValid={isValid}
                 />
                 <Text

@@ -7,14 +7,12 @@ import {
   Login,
   Signup,
   Welcome,
-  Home,
-  Stepone,
-  Steptwo,
   Preview,
   Register,
   OTPScreen,
   SecurityCheck,
   HistoryDetails,
+  ComplaintScreen,
 } from "./screen";
 import BottomTabNavigation from "./navigation/BottomTabNavigation";
 
@@ -85,21 +83,6 @@ export default function App() {
         />
 
         <Stack.Screen
-          name="Stepone"
-          component={Stepone}
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="Steptwo"
-          component={Steptwo}
-          options={{
-            headerShown: false,
-          }}
-        />
-
-        <Stack.Screen
           name="Preview"
           component={Preview}
           options={{
@@ -110,6 +93,14 @@ export default function App() {
         <Stack.Screen
           name="History Details"
           component={HistoryDetails}
+          options={{
+            headerShown: false,
+          }}
+        />
+
+        <Stack.Screen
+          name="Complaint"
+          component={ComplaintScreen}
           options={{
             headerShown: false,
           }}

@@ -25,7 +25,7 @@ const OTPScreen = (props) => {
   // Function to resend OTP
   const handleResendOTP = () => {
     // Implement the logic to resend the OTP here
-    props.navigation.navigate("Bottom Navigation");
+    props.navigation.replace("Bottom Navigation");
   };
 
   const handleIconClick = () => {

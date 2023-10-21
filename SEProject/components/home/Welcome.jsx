@@ -27,7 +27,7 @@ const Welcome = () => {
           </View>
         </View>
         <View>
-          <TouchableOpacity style={styles.reportBtn} onPressIn={() => navigation.navigate("Stepone")}>
+          <TouchableOpacity style={styles.reportBtn} onPressIn={() => navigation.navigate("Complaint")}>
             <Ionicons
               name="camera-outline"
               size={SIZES.xLarge}

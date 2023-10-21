@@ -33,7 +33,7 @@ const Welcome = ({ navigation }) => {
 
           <Button
             title="J o i n   N o w"
-            onPress={() => navigation.navigate("Login")}
+            onPress={() => navigation.replace("Login")}
             style={styles.joinNowBtn}
             textColor={COLORS.WHITE}
           />
