@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     fontSize: SIZES.medium,
     fontFamily: "light",
     marginTop: 10,
-  },
+  },z
   btnSubmit: {
     height: 50,
     width: "100%",
