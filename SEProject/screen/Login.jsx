@@ -16,10 +16,11 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { COLORS } from "../constants";  
+import axios  from "axios";
 
 const validationSchema = Yup.object().shape({
   password: Yup.string()
-    .min(8, "Password must be at least 8 characters")
+    .min(6, "Password must be at least 6 characters")
     .required("password is Required"),
   email: Yup.string()
     .email("Provide a valid email address")
@@ -30,6 +31,17 @@ const Login = ({ navigation }) => {
   const [loader, setLoader] = useState(false);
   const [responseData, setResponseData] = useState(null);
   const [obsecureText, setObsecureText] = useState(false);
+
+  const handleSubmit = async (values) => {
+    if(values.email && values.password){
+      try {
+        const response = await axios.post('https://backend-se-api.onrender.com/api/complainers/login', values);
+        console.log(response.data);
+      } catch (error) {
+        Alert.alert("Oops", "Error: "+ error);
+      }
+    }
+  }
 
   const isValidForm = () => {
     Alert.alert("Invalid Form", "Please provide all required fields", [
@@ -65,7 +77,7 @@ const Login = ({ navigation }) => {
           <Formik
             initialValues={{ email: "", password: "" }}
             validationSchema={validationSchema}
-            onSubmit={(values) => console.log(values)}
+            onSubmit={handleSubmit}
           >
             {({
               handleChange,
@@ -156,7 +168,7 @@ const Login = ({ navigation }) => {
                 </View>
                 <SubmitButton
                   title={"L O G I N"}
-                  onPress={isValid ? handleSubmit : () => navigation.replace("OTP")}
+                  onPress={isValid ? handleSubmit : () =>isValidForm()}
                   isValid={isValid}
                 />
                 <Text

@@ -32,7 +32,8 @@ const styles = StyleSheet.create({
       joinNowBtn: {
         marginTop: 2,
         width: "100%",
-        marginTop: 20
+        marginTop: 20,
+        fontFamily: "bold"
       }
 });
 

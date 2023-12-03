@@ -36,7 +36,7 @@ const validationSchema = Yup.object().shape({
     .email("Provide a valid email address")
     .required("Email is Required"),
   password: Yup.string()
-    .min(8, "Password must be at least 8 characters")
+    .min(6, "Password must be at least 6 characters")
     .required("Password is Required"),
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], "Passwords must match")
@@ -67,13 +67,13 @@ const Signup = ({ navigation }) => {
   };
 
   return (
-    <KeyboardAvoidingView
-      style={{ flex: 1 }} // Adjust the elevation as needed
-      behavior={Platform.OS == "ios" ? "padding" : "height"} // This determines how the view behaves when the keyboard is displayed
-      enabled
-    >
-      <ScrollView>
+    // <KeyboardAvoidingView
+    //   style={{ flex: 1 }} // Adjust the elevation as needed
+    //   behavior={Platform.OS == "ios" ? "padding" : "height"} // This determines how the view behaves when the keyboard is displayed
+    //   enabled
+    // >
         <SafeAreaView style={styles.safeAreaContainer}>
+          <ScrollView>
           <View>
             <BackBtn onPress={() => navigation.goBack()} />
             <Image
@@ -412,9 +412,9 @@ const Signup = ({ navigation }) => {
               )}
             </Formik>
           </View>
+          </ScrollView>
         </SafeAreaView>
-      </ScrollView>
-    </KeyboardAvoidingView>
+    // {/* </KeyboardAvoidingView> */}
   );
 };
 
