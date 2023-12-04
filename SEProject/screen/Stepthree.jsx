@@ -11,10 +11,12 @@ import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { DEPARTMENT } from "../constants/data";
 import styles from "./steptwo.style";
 import { SIZES } from "../constants";
+import axios from "axios";
 
 // STEP-3 : SELECT DEPARTMENT
 const Stepthree = ({ onNext, onPrevious, formData, setFormData }) => {
   const [departments, setSelectedDepartments] = useState([]);
+  const [responseDepartments, setResponseDepartments] = useState([]);
   const handleNext = () => {
     if (departments.length=== 0) {
       Alert.alert("Empty!!!", "Please select a department to send the complaint.", [
@@ -29,12 +31,30 @@ const Stepthree = ({ onNext, onPrevious, formData, setFormData }) => {
     }
   };
 
+  const getDepartments = async ()=> {
+    try {
+      const response = await axios.get('https://backend-se-api.onrender.com/api/systemusers/departmensts');
+      const options =response.data.map((item) => ({
+        value: item.departmentName, // Displayed label
+        key: item._id // Unique value associated with each option
+      }));
+      setResponseDepartments(options)
+      // Process the response data here
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      Alert.alert("Oops", "Error: "+ error);
+      // Handle errors here
+    }
+  }
+
+
   const handlePrevious = () => {
     setFormData({ ...formData });
     onPrevious();
   };
   useEffect(()=>{
     console.log(formData.departments)
+    getDepartments ();
   },[])
 
   
@@ -46,12 +66,12 @@ const Stepthree = ({ onNext, onPrevious, formData, setFormData }) => {
         <View style={styles.dropdownContainer}>
           <MultipleSelectList
             setSelected={(selected) => setSelectedDepartments(selected)}
-            data={DEPARTMENT}
+            data={responseDepartments}
             label="Departments"
             onSelect={() =>
               console.log("Departments selected:", departments)
             }
-            save="value"
+            save="key"
             notFoundText="No data exists"
             fontFamily={"semibold"}
             maxHeight={SIZES.height}

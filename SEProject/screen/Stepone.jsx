@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -12,10 +12,22 @@ import COLORS from "../constants/colors";
 import Button2 from "../components/Button2";
 import { CRIMECATEGORIES, SIZES } from "../constants";
 import styles from "./stepone.style";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 // STEP-1 : CRIME TYPE
 const Stepone = ({ onNext, formData, setFormData }) => {
   const [category, setCategory] = useState(formData.category || "");
   const [filteredData, setFilteredData] = useState(CRIMECATEGORIES);
+  const [user, setuser] = useState("");
+
+  const getUser = async() => {
+    const jsonValue = await AsyncStorage.getItem('user');
+    const data = JSON.parse(jsonValue);
+    setuser(data)
+  }
+  useEffect(()=>{
+    getUser();
+  },[])
 
   const handleNext = () => {
     if (!category) {
@@ -26,7 +38,7 @@ const Stepone = ({ onNext, formData, setFormData }) => {
         },
       ]);
     } else {
-      setFormData({ ...formData, category });
+      setFormData({ ...formData, user: user._id, category  });
       onNext();
     }
   };

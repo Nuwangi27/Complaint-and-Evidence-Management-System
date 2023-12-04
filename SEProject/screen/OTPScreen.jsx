@@ -1,8 +1,10 @@
 import React, { useState, useRef } from "react";
-import { View, Text, TextInput, Button, TouchableOpacity } from "react-native";
+import { View, Text, TextInput, Button, TouchableOpacity, Alert } from "react-native";
 import styles from "./otpscreen.style";
 import { COLORS, SIZES } from "../constants";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import axios  from "axios";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const OTPScreen = (props) => {
   const [otp, setOtp] = useState(["", "", "", ""]); // An array to store each digit of the OTP
@@ -23,9 +25,32 @@ const OTPScreen = (props) => {
     }
   };
   // Function to resend OTP
-  const handleResendOTP = () => {
+  const handleResendOTP = async () => {
+    const jsonValue = await AsyncStorage.getItem('user');
+    const data = JSON.parse(jsonValue);
+    const token = data.token; // Replace with your actual bearer token
+    console.log(data);
+    console.log(token);
     // Implement the logic to resend the OTP here
-    props.navigation.replace("Bottom Navigation");
+    var otpVal = parseInt(otp.join(''), 10);
+
+    try {
+      const response = await axios.post('https://backend-se-api.onrender.com/api/complainers/otp', {
+        "otp": otpVal // Pass the otpVal in the request body
+      }, {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+    
+      console.log('Response:', response.data);
+      props.navigation.replace("Bottom Navigation");
+      // Process the response data here
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      Alert.alert("Oops", "Error: "+ error);
+      // Handle errors here
+    }
   };
 
   const handleIconClick = () => {
@@ -53,7 +78,7 @@ const OTPScreen = (props) => {
       <View style={styles.resetContainer}>
         <View style={styles.resetBtn}>
           <Button
-            title="Resend OTP"
+            title="Proceed"
             onPress={handleResendOTP}
             color={COLORS.WHITE}
           />

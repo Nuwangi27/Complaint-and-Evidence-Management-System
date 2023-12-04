@@ -27,7 +27,7 @@ const HistoryRow = ({ item }) => {
               color={COLORS.gray}
               style={{ marginRight: 3}}
             />
-            <Text style={styles.complaintTitle}>{item.complaintCategory}</Text>
+            <Text style={styles.complaintTitle}>{item.category}</Text>
           </View>
           <View style={{ flexDirection: "row" }}>
             <MaterialCommunityIcons
@@ -36,7 +36,7 @@ const HistoryRow = ({ item }) => {
               color={COLORS.gray2}
               style={{ marginRight: 3, marginTop: 3}}
             />
-            <Text style={styles.complaintSubTitle}>{item.policeStation}</Text>
+            <Text style={styles.complaintSubTitle}>{item.complaint}</Text>
           </View>
           <View style={{ flexDirection: "row" , }}>
             <MaterialCommunityIcons
@@ -45,9 +45,7 @@ const HistoryRow = ({ item }) => {
               color={COLORS.gray2}
               style={{ marginRight: 3, marginTop: 3}}
             />
-            <View style={styles.statusContainer(item.status)}>
-              <Text style={styles.statusStyle}>{item.status}</Text>
-            </View>
+              <Text style={styles.complaintSubTitle}>Latitute: {item.selectedLocation.latitude}- Longtitude: {item.selectedLocation.longitude}</Text>
           </View>
         </View>
       </TouchableOpacity>

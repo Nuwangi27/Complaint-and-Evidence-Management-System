@@ -4,7 +4,7 @@ import { COLORS } from '../constants'
 
 const SubmitButton = ({title, onPress, isValid}) => {
   return (
-    <TouchableOpacity style={styles.btnStyle(isValid ? COLORS.primary : COLORS.gray)} onPress={onPress}>
+    <TouchableOpacity  style={styles.btnStyle(isValid ? COLORS.primary : COLORS.gray)} onPress={onPress}>
         <Text style={styles.btnText}>{title}</Text>
     </TouchableOpacity>
   )

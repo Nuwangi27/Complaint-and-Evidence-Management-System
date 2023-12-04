@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -6,20 +6,67 @@ import {
   Image,
   SafeAreaView,
   ScrollView,
+  Alert
 } from "react-native";
 import styles from "./steptwo.style";
 import { Video, ResizeMode } from "expo-av";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 const Steplast = ({ onNext, onPrevious, formData, setFormData }) => {
+  const [userData, setUserData] = useState(null);
   const video = React.useRef(null);
-  const handleNext = () => {
-    onNext();
+  const handleNext = async () => {
+    // onNext();
+    setFormData({
+      ...formData,
+      file: {
+        uri: formData.attachment,
+        type: formData.attachmentType === "image" ? "image/jpeg" : "video/mp4",
+        name: formData.attachmentType === "image" ? "file.jpg" : "file.mp4",
+      },
+    });
+    console.log(formData);
+
+    const jsonValue = await AsyncStorage.getItem("user");
+    const data = JSON.parse(jsonValue);
+    const token = data.token; // Replace with your actual bearer token
+
+    try {
+      const response = await axios.post(
+        "https://backend-se-api.onrender.com/api/complainers/makeComplaint",
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      console.log("Response:", response.data);
+      onNext();
+      // Process the response data here
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      Alert.alert("Oops", "Error: " + error);
+      // Handle errors here
+    }
   };
 
   const handlePrevious = () => {
     setFormData({ ...formData });
     onPrevious();
   };
+
+  const getUser = async () => {
+    const jsonValue = await AsyncStorage.getItem("user");
+    const data = JSON.parse(jsonValue);
+    setUserData(data);
+  };
+  useEffect(() => {
+    getUser();
+  }, []);
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView style={styles.secondContainer}>
@@ -31,19 +78,25 @@ const Steplast = ({ onNext, onPrevious, formData, setFormData }) => {
         <Text style={styles.previewHeader}>Personal Informations</Text>
         {/* First Name */}
         <Text style={styles.previewTitle}>First Name:</Text>
-        <Text style={styles.previewSubTitle}>Yesh</Text>
+        <Text style={styles.previewSubTitle}>
+          {userData && userData.firstName}
+        </Text>
         {/* Last Name */}
         <Text style={styles.previewTitle}>Last Name:</Text>
-        <Text style={styles.previewSubTitle}>Adithya</Text>
+        <Text style={styles.previewSubTitle}>
+          {userData && userData.lastName}
+        </Text>
         {/* Address */}
         <Text style={styles.previewTitle}>Address:</Text>
-        <Text style={styles.previewSubTitle}>Rawathawaththa, Moratuwa</Text>
+        <Text style={styles.previewSubTitle}>
+          {userData && userData.address}
+        </Text>
         {/* National ID */}
         <Text style={styles.previewTitle}>National ID:</Text>
-        <Text style={styles.previewSubTitle}>980852480V</Text>
+        <Text style={styles.previewSubTitle}>{userData && userData.NIC}</Text>
         {/* Email */}
         <Text style={styles.previewTitle}>Email address:</Text>
-        <Text style={styles.previewSubTitle}>yesh.adithya@gmail.com</Text>
+        <Text style={styles.previewSubTitle}>{userData && userData.email}</Text>
 
         <Text style={styles.previewHeader}>Complaint Informations</Text>
         {/* Complaint Category */}
@@ -83,14 +136,14 @@ const Steplast = ({ onNext, onPrevious, formData, setFormData }) => {
         </View>
 
         {/* Department */}
-        <Text style={styles.previewTitle}>To Departments:</Text>
+        {/* <Text style={styles.previewTitle}>To Departments:</Text>
         {JSON.parse(JSON.stringify(formData.departments)).map(
           (value, index) => (
             <Text style={styles.previewSubTitle} key={index}>
               {value}
             </Text>
           )
-        )}
+        )} */}
 
         <View style={styles.bottomRow}>
           <TouchableOpacity

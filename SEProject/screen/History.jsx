@@ -1,8 +1,10 @@
-import { View, Image, FlatList } from "react-native";
-import React, { useState } from "react";
+import { View, Image, FlatList, Alert } from "react-native";
+import React, { useState, useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SIZES } from "../constants";
 import HistoryRow from "../components/history/HistoryRow";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const data = [
   {
@@ -41,7 +43,34 @@ const data = [
 ];
 
 const History = () => {
-  const [searchresults, setSearchResults] = useState(data);
+  const [searchresults, setSearchResults] = useState([]);
+  const getData = async () => {
+    const jsonValue = await AsyncStorage.getItem("user");
+    const data = JSON.parse(jsonValue);
+    const token = data.token; // Replace with your actual bearer token
+    // Implement the logic to resend the OTP here
+
+    try {
+      const response = await axios.get(
+        "https://backend-se-api.onrender.com/api/complainers/history",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      console.log("Response:", response.data);
+      setSearchResults(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      Alert.alert("Oops", "Error: " + error);
+      // Handle errors here
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <SafeAreaView>
       {searchresults.length === 0 ? (

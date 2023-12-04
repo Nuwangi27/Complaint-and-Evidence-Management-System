@@ -5,8 +5,10 @@ import { COLORS, SIZES } from "../../constants";
 import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
+
 const Welcome = () => {
   const navigation = useNavigation();
+
   return (
     <View>
       <View style={styles.container}>

@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styles from "./profile.style";
 import { StatusBar } from "expo-status-bar";
 import { COLORS } from "../constants";
@@ -15,10 +15,31 @@ import {
   MaterialCommunityIcons,
   SimpleLineIcons,
 } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const Profile = ({ navigation }) => {
   const [userData, setUserData] = useState(null);
   const [userLogin, setUserLogin] = useState(true);
+
+  const getUser = async () => {
+    const jsonValue = await AsyncStorage.getItem("user");
+    const data = JSON.parse(jsonValue);
+    console.log(data);
+    setUserData(data);
+  };
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const removeUser = async () => {
+    try {
+      await AsyncStorage.removeItem("user");
+      navigation.replace("Login");
+      console.log("User item removed from AsyncStorage");
+    } catch (error) {
+      console.error("Error removing user item:", error);
+    }
+  };
 
   const logout = () => {
     Alert.alert("Logout", "Are you sure you want to logout", [
@@ -28,32 +49,12 @@ const Profile = ({ navigation }) => {
       },
       {
         text: "Continue",
-        onPress: () => console.log("continue pressed"),
+        onPress: removeUser,
       },
       {
         defaultIndex: 1,
       },
     ]);
-  };
-
-  const clearCache = () => {
-    Alert.alert(
-      "Clear Cache",
-      "Are you sure you want to delete all saved data on your device",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("cancel clear cache"),
-        },
-        {
-          text: "Continue",
-          onPress: () => console.log("continue clear cache"),
-        },
-        {
-          defaultIndex: 1,
-        },
-      ]
-    );
   };
 
   const deleteAccount = () => {
@@ -91,7 +92,11 @@ const Profile = ({ navigation }) => {
             style={styles.profile}
           />
           <Text style={styles.name}>
-            {userLogin ? "Yesh Adithya" : "Please login into your account"}
+            {userData && userData.firstName + " " + userData.lastName}
+          </Text>
+          <Text style={styles.name}>{userData && `NIC: ` + userData.NIC}</Text>
+          <Text style={styles.name}>
+            {userData && `Phone Number: ` + userData.phoneNumber}
           </Text>
           {!userLogin ? (
             <TouchableOpacity onPress={() => navigation.navigate("Login")}>
@@ -101,7 +106,7 @@ const Profile = ({ navigation }) => {
             </TouchableOpacity>
           ) : (
             <View style={styles.loginBtn}>
-              <Text style={styles.menuText}>yesh.adithya31@gmail.com </Text>
+              <Text style={styles.menuText}>{userData && userData.email}</Text>
             </View>
           )}
 
@@ -109,23 +114,6 @@ const Profile = ({ navigation }) => {
             <View></View>
           ) : (
             <View style={styles.menuWrapper}>
-              <TouchableOpacity
-                onPress={() => navigation.navigate("Favourites")}
-              >
-                <View style={styles.menuItem(0.2)}>
-                  <View style={{ alignItems: "flex-end" }}>
-                    <View style={styles.notificationCount}>
-                      <Text style={styles.notificationNumber}>9</Text>
-                    </View>
-                    <MaterialCommunityIcons
-                      name="bell-outline"
-                      color={COLORS.primary}
-                      size={24}
-                    />
-                  </View>
-                  <Text style={styles.menuText}>Notification and Alert</Text>
-                </View>
-              </TouchableOpacity>
 
               <TouchableOpacity onPress={() => navigation.navigate("History")}>
                 <View style={styles.menuItem(0.2)}>
@@ -146,28 +134,6 @@ const Profile = ({ navigation }) => {
                     size={24}
                   />
                   <Text style={styles.menuText}>Emergency Contacts</Text>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={() => clearCache()}>
-                <View style={styles.menuItem(0.2)}>
-                  <MaterialCommunityIcons
-                    name="cached"
-                    color={COLORS.primary}
-                    size={24}
-                  />
-                  <Text style={styles.menuText}>Clear cache</Text>
-                </View>
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={() => deleteAccount()}>
-                <View style={styles.menuItem(0.2)}>
-                  <AntDesign
-                    name="deleteuser"
-                    color={COLORS.primary}
-                    size={24}
-                  />
-                  <Text style={styles.menuText}>Delete Account</Text>
                 </View>
               </TouchableOpacity>
 
